@@ -54,6 +54,8 @@ if (enable_resource_allowlist_generation) {
 }
 
 declare_args() {
+  extra_asmflags = ""
+  extra_cflags = ""
   extra_cxxflags = ""
   extra_ldflags = ""
 }
