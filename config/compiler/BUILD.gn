@@ -5,6 +5,7 @@
 import("//build/buildflag_header.gni")
 import("//build/config/android/config.gni")
 import("//build/config/c++/c++.gni")
+import("//build/config/cheri.gni")
 import("//build/config/chrome_build.gni")
 import("//build/config/chromeos/args.gni")
 import("//build/config/chromeos/ui_mode.gni")
@@ -367,7 +368,8 @@ config("compiler") {
         }
 
         # The x86 toolchain currently has problems with stack-protector.
-        if (is_android && current_cpu == "x86") {
+        # Similarly, we don't need stack-protector on CHERI.
+        if (is_android && current_cpu == "x86" || is_cheri) {
           cflags += [ "-fno-stack-protector" ]
         } else if (current_os != "aix") {
           # Not available on aix.
@@ -1114,6 +1116,17 @@ config("compiler_cpu_abi") {
           !(is_chromeos_lacros && is_chromeos_device)) {
         cflags += [ "--target=aarch64-linux-gnu" ]
         ldflags += [ "--target=aarch64-linux-gnu" ]
+      } else if (is_clang && is_bsd && is_cheri) {
+        cflags += [
+          "--target=aarch64c-unknown-freebsd",
+          "-march=morello",
+          "-mabi=purecap",
+        ]
+        ldflags += [
+          "--target=aarch64c-unknown-freebsd",
+          "-march=morello",
+          "-mabi=purecap",
+        ]
       }
     } else if (current_cpu == "mipsel" && !is_nacl) {
       ldflags += [ "-Wl,--hash-style=sysv" ]
