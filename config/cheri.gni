@@ -1,0 +1,12 @@
+# Copyright 2025 The Chromium Project. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+declare_args() {
+  # Build for a CHERI architecture.
+  is_cheri = false
+
+  # A global flag to enable all CHERI debugging.
+  v8_cheri_debug = false
+}
+
