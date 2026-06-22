@@ -235,6 +235,8 @@ template("clang_lib") {
 clang_lib("compiler_builtins") {
   if (is_mac) {
     libname = "osx"
+  } else if (is_bsd) {
+    # Handled by libgcc.
   } else if (is_ios) {
     if (target_platform == "iphoneos") {
       if (target_environment == "simulator") {
